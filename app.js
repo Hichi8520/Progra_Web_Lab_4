@@ -14,7 +14,7 @@ con.on('open', () => {
 app.use(express.json())
 
 const charRouter = require('./routes/characters')
-app.use('/characters',charRouter)
+app.use('/api/v1',charRouter)
 
 app.listen(9000, () => {
     console.log('Server started')

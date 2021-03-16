@@ -2,25 +2,25 @@ const express = require('express')
 const router = express.Router()
 const Character = require('../models/character')
 
-router.get('/', async(req, res) => {
+router.get('/characters', async(req, res) => {
     try{
             const characters = await Character.find()
-            res.json(characters)
+            res.status(200).json(characters)
     }catch(err){
-        res.send('Error ' + err)
+        res.status(404).send('Error ' + err)
     }
 })
 
-router.get('/:id', async(req, res) => {
+router.get('/characters/:id', async(req, res) => {
     try{
             const character = await Character.findById(req.params.id)
-            res.json(character)
+            res.status(200).json(character)
     }catch(err){
-        res.send('Error ' + err)
+        res.status(404).send('Error ' + err)
     }
 })
 
-router.post('/', async(req, res) => {
+router.post('/characters', async(req, res) => {
     const character = new Character({
         name: req.body.name,
         nickname: req.body.nickname,
@@ -30,30 +30,33 @@ router.post('/', async(req, res) => {
 
     try{
         const c1 = await character.save()
-        res.json(c1)
+        //res.json(c1)
+        res.sendStatus(201)
     }catch(err){
-        res.send('Error')
+        res.status(404).send('Error')
     }
 })
 
-router.patch('/:id', async(req, res) => {
+router.patch('/characters/:id', async(req, res) => {
     try{
         const character = await Character.findById(req.params.id)
         character.name = req.body.name
         const c1 = await character.save()
-        res.json(c1)
+        //res.json(c1)
+        res.sendStatus(204)
     }catch(err){
-        res.send('Error')
+        res.status(404).send('Error')
     }
 })
 
-router.delete('/:id', async(req, res) => {
+router.delete('/characters/:id', async(req, res) => {
     try{
         const character = await Character.findByIdAndRemove(req.params.id)
         const c1 = await character.remove()
-        res.json(c1)
+        //res.json(c1)
+        res.sendStatus(204)
     }catch(err){
-        res.send('Error')
+        res.status(404).send('Error')
     }
 })
 
