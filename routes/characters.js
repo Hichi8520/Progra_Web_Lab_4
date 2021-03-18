@@ -40,7 +40,20 @@ router.post('/characters', async(req, res) => {
 router.patch('/characters/:id', async(req, res) => {
     try{
         const character = await Character.findById(req.params.id)
-        character.name = req.body.name
+
+        if(req.body.name){
+            character.name = req.body.name
+        }
+        if(req.body.nickname){
+            character.nickname = req.body.nickname
+        }
+        if(req.body.occupation){
+            character.occupation = req.body.occupation
+        }
+        if(req.body.portrayed){
+            character.portrayed = req.body.portrayed
+        }
+
         const c1 = await character.save()
         //res.json(c1)
         res.sendStatus(204)
