@@ -16,6 +16,9 @@ app.use(express.json())
 const charRouter = require('./routes/characters')
 app.use('/api/v1',charRouter)
 
+const epsRouter = require('./routes/episodes')
+app.use('/api/v1',epsRouter)
+
 app.listen(9000, () => {
     console.log('Server started')
 })
