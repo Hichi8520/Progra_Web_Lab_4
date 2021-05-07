@@ -1,6 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const Character = require('../models/character')
+const cors = require('cors')
+
+router.use(cors())
 
 router.get('/characters', async(req, res) => {
     try{
