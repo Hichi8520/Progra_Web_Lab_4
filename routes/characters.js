@@ -5,6 +5,17 @@ const cors = require('cors')
 
 router.use(cors())
 
+/**
+ * @swagger
+ * /api/v1/characters:
+ *  get:
+ *      description: Use to request all the characters
+ *      responses:
+ *          '200':
+ *              description: A successful response
+ *          '404':
+ *              description: A failed response
+ */
 router.get('/characters', async(req, res) => {
     try{
             const characters = await Character.find()
@@ -14,6 +25,24 @@ router.get('/characters', async(req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/v1/characters/{id}:
+ *  get:
+ *      description: Use to request a specific character by id
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *              type: integer
+ *              required: true
+ *              description: the character id
+ *      responses:
+ *          '200':
+ *              description: A successful response
+ *          '404':
+ *              description: The character id was not found
+ */
 router.get('/characters/:id', async(req, res) => {
     try{
             const character = await Character.findById(req.params.id)
@@ -23,6 +52,17 @@ router.get('/characters/:id', async(req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/v1/characters:
+ *  post:
+ *      description: Use to create a new character
+ *      responses:
+ *          '201':
+ *              description: The character was created successfully
+ *          '404':
+ *              description: The character could not be created
+ */
 router.post('/characters', async(req, res) => {
     const character = new Character({
         name: req.body.name,
@@ -40,6 +80,17 @@ router.post('/characters', async(req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/v1/characters:
+ *  patch:
+ *      description: Use to update the info of a specific character by id
+ *      responses:
+ *          '204':
+ *              description: The character was updated successfully
+ *          '404':
+ *              description: The character could not be updated
+ */
 router.patch('/characters/:id', async(req, res) => {
     try{
         const character = await Character.findById(req.params.id)
@@ -65,6 +116,17 @@ router.patch('/characters/:id', async(req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/v1/characters:
+ *  delete:
+ *      description: Use to delete a specific character by id
+ *      responses:
+ *          '204':
+ *              description: The character was deleted successfully
+ *          '404':
+ *              description: The character could not be deleted
+ */
 router.delete('/characters/:id', async(req, res) => {
     try{
         const character = await Character.findByIdAndRemove(req.params.id)

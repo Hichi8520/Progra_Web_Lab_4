@@ -5,6 +5,17 @@ const cors = require('cors')
 
 router.use(cors())
 
+/**
+ * @swagger
+ * /api/v1/episodes:
+ *  get:
+ *      description: Use to request all the episodes
+ *      responses:
+ *          '200':
+ *              description: A successful response
+ *          '404':
+ *              description: A failed response
+ */
 router.get('/episodes', async(req, res) => {
     try{
             const episodes = await Episode.find()
@@ -14,6 +25,24 @@ router.get('/episodes', async(req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/v1/episodes/{id}:
+ *  get:
+ *      description: Use to request a specific episode by id
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *              type: integer
+ *              required: true
+ *              description: the episode id
+ *      responses:
+ *          '200':
+ *              description: A successful response
+ *          '404':
+ *              description: The episode id was not found
+ */
 router.get('/episodes/:id', async(req, res) => {
     try{
             const episode = await Episode.findById(req.params.id)
@@ -23,6 +52,17 @@ router.get('/episodes/:id', async(req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/v1/episodes:
+ *  post:
+ *      description: Use to create a new episode
+ *      responses:
+ *          '201':
+ *              description: The episode was created successfully
+ *          '404':
+ *              description: The episode could not be created
+ */
 router.post('/episodes', async(req, res) => {
     const episode = new Episode({
         title: req.body.title,
@@ -40,6 +80,17 @@ router.post('/episodes', async(req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/v1/episodes:
+ *  patch:
+ *      description: Use to update the info of a specific episode by id
+ *      responses:
+ *          '204':
+ *              description: The episode was updated successfully
+ *          '404':
+ *              description: The episode could not be updated
+ */
 router.patch('/episodes/:id', async(req, res) => {
     try{
         const episode = await Episode.findById(req.params.id)
@@ -65,6 +116,17 @@ router.patch('/episodes/:id', async(req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /api/v1/episodes:
+ *  delete:
+ *      description: Use to delete a specific episode by id
+ *      responses:
+ *          '204':
+ *              description: The episdoe was deleted successfully
+ *          '404':
+ *              description: The episode could not be deleted
+ */
 router.delete('/episodes/:id', async(req, res) => {
     try{
         const episode = await Episode.findByIdAndRemove(req.params.id)
