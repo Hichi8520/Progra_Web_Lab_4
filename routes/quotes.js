@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Quote = require('../models/quote')
 const cors = require('cors')
+// var redisClient = require('redis').createClient;
+// var redis = redisClient(6379, 'redis');
 
 router.use(cors())
 
@@ -45,19 +47,19 @@ router.get('/quotes', async(req, res) => {
  */
 router.get('/quotes/:id', async(req, res) => {
     try{
-            redis.GET(req.params.id, async function(err, reply) {
-                if (err) {
-                    res.status(404).send('Error ' + err)
-                }
-                else if (reply) {
-                    res.status(200).json(reply);
-                }
-                else {
+            // redis.GET(req.params.id, async function(err, reply) {
+            //     if (err) {
+            //         res.status(404).send('Error ' + err)
+            //     }
+            //     else if (reply) {
+            //         res.status(200).json(reply);
+            //     }
+            //     else {
                     const quote = await Quote.findById(req.params.id)
                     res.status(200).json(quote)
-                    redis.set(req.params.id, JSON.stringify(quote))
-                }
-            })
+            //         redis.set(req.params.id, JSON.stringify(quote))
+            //     }
+            // })
             
     }catch(err){
         res.status(404).send('Error ' + err)
@@ -116,7 +118,7 @@ router.patch('/quotes/:id', async(req, res) => {
         //res.json(c1)
         res.sendStatus(204)
 
-        redis.set(req.params.id, JSON.stringify(quote))
+        // redis.set(req.params.id, JSON.stringify(quote))
 
     }catch(err){
         res.status(404).send('Error')

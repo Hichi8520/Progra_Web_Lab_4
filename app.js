@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require("body-parser")
-const url = 'mongodb://localhost/BreakingSadDB'
-var redisClient = require('redis').createClient;
-var redis = redisClient(6379, 'localhost');
+const url = 'mongodb://mongo:27017/BreakingSadDB'
+// const url = 'mongodb://localhost/BreakingSadDB'
+// const redisClient = require('redis').createClient;
+// const redis = redisClient(6379, 'redis');
 
 const app = express()
 

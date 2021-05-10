@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const Episode = require('../models/episode')
 const cors = require('cors')
+// var redisClient = require('redis').createClient;
+// var redis = redisClient(6379, 'redis');
 
 router.use(cors())
 
@@ -45,19 +47,19 @@ router.get('/episodes', async(req, res) => {
  */
 router.get('/episodes/:id', async(req, res) => {
     try{
-        redis.GET(req.params.id, async function(err, reply) {
-            if (err) {
-                res.status(404).send('Error ' + err)
-            }
-            else if (reply) {
-                res.status(200).json(reply);
-            }
-            else {
+        // redis.GET(req.params.id, async function(err, reply) {
+        //     if (err) {
+        //         res.status(404).send('Error ' + err)
+        //     }
+        //     else if (reply) {
+        //         res.status(200).json(reply);
+        //     }
+        //     else {
                 const episode = await Episode.findById(req.params.id)
                 res.status(200).json(episode)
-                redis.set(req.params.id, JSON.stringify(episode))
-            }
-        })
+        //         redis.set(req.params.id, JSON.stringify(episode))
+        //     }
+        // })
 
     }catch(err){
         res.status(404).send('Error ' + err)
@@ -124,7 +126,7 @@ router.patch('/episodes/:id', async(req, res) => {
         //res.json(c1)
         res.sendStatus(204)
 
-        redis.set(req.params.id, JSON.stringify(episode))
+        // redis.set(req.params.id, JSON.stringify(episode))
 
     }catch(err){
         res.status(404).send('Error')
