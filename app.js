@@ -4,6 +4,8 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require("body-parser")
 const url = 'mongodb://localhost/BreakingSadDB'
+var redisClient = require('redis').createClient;
+var redis = redisClient(6379, 'localhost');
 
 const app = express()
 

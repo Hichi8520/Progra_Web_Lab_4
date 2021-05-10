@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const Character = require('../models/character')
 const cors = require('cors')
+const clearCache = require('../services/cache')
+var redisClient = require('redis').createClient;
+var redis = redisClient(6379, 'localhost');
 
 router.use(cors())
 
@@ -45,8 +48,20 @@ router.get('/characters', async(req, res) => {
  */
 router.get('/characters/:id', async(req, res) => {
     try{
-            const character = await Character.findById(req.params.id)
-            res.status(200).json(character)
+            redis.GET(req.params.id, async function(err, reply) {
+                if (err) {
+                    res.status(404).send('Error ' + err)
+                }
+                else if (reply) {
+                    res.status(200).json(reply);
+                }
+                else {
+                    const character = await Character.findById(req.params.id)
+                    res.status(200).json(character)
+                    redis.set(req.params.id, JSON.stringify(character))
+                }
+            })
+            
     }catch(err){
         res.status(404).send('Error ' + err)
     }
@@ -75,6 +90,7 @@ router.post('/characters', async(req, res) => {
         const c1 = await character.save()
         //res.json(c1)
         res.sendStatus(201)
+        //clearCache(v_data.vehicleType)
     }catch(err){
         res.status(404).send('Error')
     }
@@ -111,6 +127,9 @@ router.patch('/characters/:id', async(req, res) => {
         const c1 = await character.save()
         //res.json(c1)
         res.sendStatus(204)
+
+        redis.set(req.params.id, JSON.stringify(character))
+
     }catch(err){
         res.status(404).send('Error')
     }
