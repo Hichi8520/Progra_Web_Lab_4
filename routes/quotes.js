@@ -45,8 +45,20 @@ router.get('/quotes', async(req, res) => {
  */
 router.get('/quotes/:id', async(req, res) => {
     try{
-            const quote = await Quote.findById(req.params.id)
-            res.status(200).json(quote)
+            redis.GET(req.params.id, async function(err, reply) {
+                if (err) {
+                    res.status(404).send('Error ' + err)
+                }
+                else if (reply) {
+                    res.status(200).json(reply);
+                }
+                else {
+                    const quote = await Quote.findById(req.params.id)
+                    res.status(200).json(quote)
+                    redis.set(req.params.id, JSON.stringify(quote))
+                }
+            })
+            
     }catch(err){
         res.status(404).send('Error ' + err)
     }
@@ -103,6 +115,9 @@ router.patch('/quotes/:id', async(req, res) => {
         const c1 = await quote.save()
         //res.json(c1)
         res.sendStatus(204)
+
+        redis.set(req.params.id, JSON.stringify(quote))
+
     }catch(err){
         res.status(404).send('Error')
     }
