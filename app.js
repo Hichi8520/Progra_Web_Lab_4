@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require("body-parser")
-const url = 'mongodb://mongo:27017/BreakingSadDB'
+const url = 'mongodb+srv://LuisRoldan:contraseña@clusterbackend.qegr9.mongodb.net/BreakingSad?retryWrites=true&w=majority'
 // const url = 'mongodb://localhost/BreakingSadDB'
 // const redisClient = require('redis').createClient;
 // const redis = redisClient(6379, 'redis');
